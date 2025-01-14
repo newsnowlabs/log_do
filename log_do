@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-LOG_DO_VERSION="1.4.0"
+LOG_DO_VERSION="1.4.1"
 
 # Enable logging via log_do
 LOG_DO_VERBOSE=""
@@ -203,11 +203,13 @@ log_do() {
       *) return 0; ;; # skip command
     esac
     
-  elif [ -z "$LOG_DO_RUN" ]; then
-    return
-    
   else
     [ -n "$LOG_DO_VERBOSE" ] && _log "$LOG_DO_INDENT\$ $@"
+
+    if [ -z "$LOG_DO_RUN" ]; then
+      return
+    fi
+    
   fi
   
   if [ -n "$LOG_DO_NO_PIPE" ]; then
