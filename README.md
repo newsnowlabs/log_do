@@ -38,7 +38,8 @@ $ log_do -vv -s -xx head -n 3 /etc/os-release
 2025-01-16.00:36:32.831343|2364797|   > VERSION_ID="12"
 2025-01-16.00:36:32.841251|2364797|   * returned 0 (from head -n 3 /etc/os-release)
 
-# Set log_do options -vv -s -x as defaults for future log_do commands
+# Set log_do options -vv -s -x as defaults for future log_do commands:
+# which means log verbosely, actually execute, in 'silent' mode (no real stdout/stderr)
 log_do_setopt -vv -s -x
 
 # Log and run 'head -n 3 /etc/os-release' and its exit code, also enabling stdout to be piped through sort
@@ -54,7 +55,6 @@ VERSION_ID="12"
 
 # Log and run 'head -n 3 /etc/os-release' and its exit code, enabling stdout to be piped through 'log_do sort'
 $ log_do --stdout head -n 3 /etc/os-release | log_do sort
-$ log_do --stdout head -n 3 /etc/os-release | log_do sort
 2025-01-16.00:34:25.640307|2382075| $ sort
 2025-01-16.00:34:25.641831|2382074| $ head -n 3 /etc/os-release
 2025-01-16.00:34:25.666227|2382074|   > PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
@@ -65,6 +65,13 @@ $ log_do --stdout head -n 3 /etc/os-release | log_do sort
 2025-01-16.00:34:25.718962|2382075|   > PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
 2025-01-16.00:34:25.727639|2382075|   > VERSION_ID="12"
 2025-01-16.00:34:25.735719|2382075|   * returned 0 (from sort)
+
+# Log and run 'ls -ld /tmp /xyzzy' (a command designed to emit to both stdout and stderr) and its exit code
+$ log_do ls -ld /tmp /xyzzy
+2025-02-04.09:31:59.943831|0009266| $ ls -ld /tmp /xyzzy
+2025-02-04.09:31:59.958697|0009266|   > drwxrwxrwt 12 root root 260 Feb  4 09:23 /tmp
+2025-02-04.09:31:59.958987|0009266|   ! ls: cannot access '/xyzzy': No such file or directory
+2025-02-04.09:31:59.967712|0009266|   * returned 2 (from ls -ld /tmp /xyzzy)
 ```
 
 ## Example 2
